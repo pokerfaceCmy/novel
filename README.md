@@ -4,10 +4,10 @@
 小说app
 
 #### 软件架构
-采用MVVM架构 及 Model(repository) ViewModel View(activity fragment等) 三级 
-Model层负责数据的获取 存储
-ViewModel层负责向view层提供数据 控制生命周期
-View层负责展示Ui界面
+采用MVVM架构 及 Model(repository) ViewModel View(activity fragment等) 三级 <br><br>
+Model层负责数据的获取 存储<br>
+ViewModel层负责向view层提供数据 控制生命周期<br>
+View层负责展示Ui界面<br>
 
 #### 重要文件说明
 1. BaseActivity 所有Activity的基类,派生与AppCompatActivity
