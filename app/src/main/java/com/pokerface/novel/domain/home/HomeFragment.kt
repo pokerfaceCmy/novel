@@ -26,13 +26,13 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
     private val viewModel by getViewModel(MainViewModel::class.java) {
         categoryLD.observe(mLifecycleOwner) {
             categoryAdapter.setList(it)
+            binding.rvCategoryTab.findViewHolderForAdapterPosition(0)?.itemView?.performClick()
         }
 
         categoryDetailLD.observe(mLifecycleOwner) {
             categoryDetailAdapter.setList(it)
         }
     }
-
 
     override fun init() {
         binding.apply {
