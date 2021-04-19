@@ -3,11 +3,12 @@ package com.pokerface.common.base
 import android.content.Context
 import android.graphics.Color
 import android.os.Bundle
+import android.text.Layout
 import android.view.LayoutInflater
-import androidx.appcompat.app.AppCompatActivity
+import android.view.View
+import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.viewbinding.ViewBinding
 import com.google.android.material.snackbar.Snackbar
@@ -22,19 +23,18 @@ import java.lang.reflect.ParameterizedType
 
 /**
  * @Author: pokerfaceCmy
- * @Date: 2021/4/13 10:42
- * @Desc: Activity的基类
+ * @Date: 2021/4/19 10:25
+ * @Desc: TODO
  * @GitHub：https://github.com/pokerfaceCmy
  */
-abstract class BaseActivity<VB : ViewBinding> : AppCompatActivity(),
-    IUIActionEventObserver {
+abstract class BaseFragment<VB : ViewBinding> : Fragment(), IUIActionEventObserver {
     protected lateinit var binding: VB
 
     override val lifecycleSupportedScope: CoroutineScope
         get() = lifecycleScope
 
     override val mContext: Context?
-        get() = this
+        get() = requireActivity()
 
     override val mLifecycleOwner: LifecycleOwner
         get() = this
@@ -42,7 +42,7 @@ abstract class BaseActivity<VB : ViewBinding> : AppCompatActivity(),
     private lateinit var job: Job
 
     private val loadingDialog: BasePopupView? by lazy {
-        XPopup.Builder(this)
+        XPopup.Builder(mContext)
             .dismissOnTouchOutside(false)
             .dismissOnBackPressed(true)
             .setPopupCallback(object : XPopupCallback {
@@ -54,7 +54,7 @@ abstract class BaseActivity<VB : ViewBinding> : AppCompatActivity(),
 
                 override fun onDismiss(popupView: BasePopupView?) {
                     //如果已完成任务,正常销毁dialog
-                    if (this@BaseActivity::job.isInitialized) {
+                    if (this@BaseFragment::job.isInitialized) {
                         if (job.isCompleted) {
                             return
                         } else {//取消任务,弹出提示
@@ -82,22 +82,26 @@ abstract class BaseActivity<VB : ViewBinding> : AppCompatActivity(),
                 }
 
             })
-            .asCustom(LoadingDialogSimple(this))
+            .asCustom(mContext?.let { LoadingDialogSimple(it) })
 
     }
 
-    @Suppress("UNCHECKED_CAST")
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         val type = javaClass.genericSuperclass as ParameterizedType
         val clazz0 = type.actualTypeArguments[0] as Class<VB>
         val method = clazz0.getMethod("inflate", LayoutInflater::class.java)
-        binding = method.invoke(null, layoutInflater) as VB
-        setContentView(binding.root)
-
-        init()
+        binding = method.invoke(null, inflater) as VB
+        return binding.root
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        init()
+    }
 
     abstract fun init()
 
@@ -130,5 +134,4 @@ abstract class BaseActivity<VB : ViewBinding> : AppCompatActivity(),
             .setTextColor(Color.parseColor("#E06C75"))
             .show()
     }
-
 }

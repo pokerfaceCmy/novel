@@ -1,20 +1,17 @@
-package com.pokerface.novel.domain.main.vm
+package com.pokerface.novel.domain.home
 
 import androidx.hilt.lifecycle.ViewModelInject
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
 import com.pokerface.common.base.BaseViewModel
 import com.pokerface.novel.domain.main.repository.MainRepository
 import com.pokerface.novel.domain.main.repository.bean.Category
 
-/**
- * @Author: pokerfaceCmy
- * @Date: 2021/4/13 10:51
- * @Desc: TODO
- * @GitHub：https://github.com/pokerfaceCmy
- */
-class MainViewModel @ViewModelInject constructor(
+class HomeViewModel @ViewModelInject constructor(
     private val mainRepository: MainRepository
 ) : BaseViewModel() {
+
     val categoryLD = MutableLiveData<MutableList<Category>>()
 
     fun getCategory() {
