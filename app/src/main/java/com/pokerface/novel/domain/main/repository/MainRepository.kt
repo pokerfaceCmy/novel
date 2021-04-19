@@ -13,4 +13,5 @@ class MainRepository @Inject constructor(
     private val bookClient: BookClient
 ) {
     suspend fun getCategory() = bookClient.getCategory()
+    suspend fun getCategoryDetail(id: Int) = bookClient.getCategoryDetail(id)
 }

@@ -1,7 +1,10 @@
 package com.pokerface.novel.domain.main.repository.remote
 
 import com.pokerface.novel.domain.main.repository.bean.Category
+import com.pokerface.novel.domain.main.repository.bean.CategoryDetail
 import retrofit2.http.GET
+import retrofit2.http.Path
+import retrofit2.http.Query
 
 /**
  * @Author: pokerfaceCmy
@@ -12,4 +15,8 @@ import retrofit2.http.GET
 interface BookService {
     @GET("category")
     suspend fun getCategory(): MutableList<Category>
+
+    @GET("lists")
+    suspend fun getCategoryDetail(@Query("id" ) id: Int): CategoryDetail
+
 }

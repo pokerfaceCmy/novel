@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import com.pokerface.common.base.BaseViewModel
 import com.pokerface.novel.domain.main.repository.MainRepository
 import com.pokerface.novel.domain.main.repository.bean.Category
+import com.pokerface.novel.domain.main.repository.bean.CategoryDetailData
 
 /**
  * @Author: pokerfaceCmy
@@ -13,14 +14,24 @@ import com.pokerface.novel.domain.main.repository.bean.Category
  * @GitHub：https://github.com/pokerfaceCmy
  */
 class MainViewModel @ViewModelInject constructor(
-    private val mainRepository: MainRepository
+    private val mainRepository: MainRepository,
 ) : BaseViewModel() {
+
     val categoryLD = MutableLiveData<MutableList<Category>>()
+    val categoryDetailLD = MutableLiveData<MutableList<CategoryDetailData>>()
 
     fun getCategory() {
         enqueue({ mainRepository.getCategory() }) {
             onSuccess {
                 categoryLD.value = it
+            }
+        }
+    }
+
+    fun getCategoryDetail(id: Int) {
+        enqueue({ mainRepository.getCategoryDetail(id) }) {
+            onSuccess {
+                categoryDetailLD.value = it?.categoryDetailDataList
             }
         }
     }
