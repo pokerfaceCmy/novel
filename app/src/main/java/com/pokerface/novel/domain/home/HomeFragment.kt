@@ -23,7 +23,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
     private val categoryDetailAdapter by lazy {
         CategoryDetailAdapter()
     }
-    private val viewModel by getViewModel(MainViewModel::class.java) {
+    private val viewModel by getViewModel(HomeViewModel::class.java) {
         categoryLD.observe(mLifecycleOwner) {
             categoryAdapter.setList(it)
             binding.rvCategoryTab.findViewHolderForAdapterPosition(0)?.itemView?.performClick()
